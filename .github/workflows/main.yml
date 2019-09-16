@@ -14,3 +14,16 @@ jobs:
       run: make test
     - name: Tag image
       run: make install
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      if: github.ref == 'master'
+    - uses: actions/checkout@master
+    - name: Publish to Registry
+      uses: elgohr/Publish-Docker-Github-Action@master
+      with:
+        name: Cobrijani/restic-backup-docker
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+        registry: docker.pkg.github.com

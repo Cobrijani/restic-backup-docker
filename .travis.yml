@@ -14,17 +14,12 @@ script:
 
 before_deploy:
  - make DOCKER_USER=${DOCKER_USER} DOCKER_PASSWORD=${DOCKER_PASSWORD} login
- - make DOCKER_USER=${DOCKER_GITHUB_USER} DOCKER_PASSWORD=${DOCKER_GITHUB_PASSWORD} DOCKER_REGISTRY_AUTH=docker.pkg.github.com login
 
 deploy:
   - provider: script
     script: make deploy
     on:
       branch: master
-  - provider: script
-    script: make ORG_NAME=docker.pkg.github.com/Cobrijani/restic-backup-docker deploy
-    on:
-      branch: github-registry
 
 after_deploy:
  - make logout

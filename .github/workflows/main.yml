@@ -19,7 +19,7 @@ jobs:
     steps:
     - uses: actions/checkout@master
     - name: Publish to Registry
-      if: github.ref == 'master'
+#       if: github.ref == 'master'
       uses: elgohr/Publish-Docker-Github-Action@master
       with:
         name: Cobrijani/restic-backup-docker

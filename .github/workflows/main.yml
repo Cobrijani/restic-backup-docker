@@ -5,7 +5,6 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
-    
     steps:
     - uses: actions/checkout@v1
     - name: Build image
@@ -18,9 +17,9 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      if: github.ref == 'master'
     - uses: actions/checkout@master
     - name: Publish to Registry
+      if: github.ref == 'master'
       uses: elgohr/Publish-Docker-Github-Action@master
       with:
         name: Cobrijani/restic-backup-docker

@@ -10,3 +10,7 @@ jobs:
     - uses: actions/checkout@v1
     - name: Build image
       run: make build
+    - name: Test image
+      run: make test
+    - name: Tag image
+      run: make install

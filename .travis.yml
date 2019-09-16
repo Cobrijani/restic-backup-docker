@@ -13,13 +13,13 @@ script:
  - make install
 
 before_deploy:
- - make login
+ - make DOCKER_USER=${DOCKER_USER} DOCKER_PASSWORD=${DOCKER_PASSWORD} login
 
 deploy:
-  provider: script
-  script: make deploy
-  on:
-    branch: master
+  - provider: script
+    script: make deploy
+    on:
+      branch: master
 
 after_deploy:
  - make logout

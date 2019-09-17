@@ -90,12 +90,9 @@ test:
 
 install:
 	${INFO} "Installing..."
-	@ docker tag $(ORG_NAME)/$(REPO_NAME):$(LATEST_TAG) $(ORG_NAME)/$(REPO_NAME):$(VERSION_TAG)
-	@ docker tag $(ORG_NAME)/$(RCLONE_REPO_NAME):$(RCLONE_LATEST_TAG) $(ORG_NAME)/$(RCLONE_REPO_NAME):$(RCLONE_VERSION_TAG)
+	@ docker tag $(ORG_NAME)/$(REPO_NAME):$(LATEST_TAG) $(DOCKER_REGISTRY)/$(ORG_NAME)/$(REPO_NAME):$(VERSION_TAG)
+	@ docker tag $(ORG_NAME)/$(RCLONE_REPO_NAME):$(RCLONE_LATEST_TAG) $(DOCKER_REGISTRY)/$(ORG_NAME)/$(RCLONE_REPO_NAME):$(RCLONE_VERSION_TAG)
 	${INFO} "Install complete"
-
-printtest:
-	${INFO} "docker push $(DOCKER_REGISTRY)/$(ORG_NAME)/$(RCLONE_REPO_NAME):$(RCLONE_VERSION_TAG)"
 
 #  docker push docker.pkg.github.com/Cobrijani/restic-backup-docker/app:1.0
 

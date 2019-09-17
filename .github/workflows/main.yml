@@ -9,15 +9,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      env:
-        ORG_NAME: cobrijani/restic-backup-docker
-        REPO_NAME: restic-backup-docker
-        RCLONE_REPO_NAME: restic-backup-docker-rclone
-        DOCKER_REGISTRY: docker.pkg.github.com
     - uses: actions/checkout@v1
     - name: Build image
-      run: make build ORG_NAME=${ORG_NAME} REPO_NAME=${REPO_NAME} RCLONE_REPO_NAME=${RCLONE_REPO_NAME}
+      run: make build ORG_NAME=cobrijani/restic-backup-docker REPO_NAME=restic-backup-docker RCLONE_REPO_NAME=restic-backup-docker-rclone
     - name: Test image
       run: make test
     - name: Tag image
-      run: make install ORG_NAME=${ORG_NAME} REPO_NAME=${REPO_NAME} RCLONE_REPO_NAME=${RCLONE_REPO_NAME} DOCKER_REGISTRY=${DOCKER_REGISTRY}
+      run: make install ORG_NAME=cobrijani/restic-backup-docker REPO_NAME=restic-backup-docker RCLONE_REPO_NAME=restic-backup-docker-rclone DOCKER_REGISTRY=docker.pkg.github.com

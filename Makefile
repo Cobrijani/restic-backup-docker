@@ -76,9 +76,13 @@ logout:
 
 deploy:
 	${INFO} "Deploying images"
+	${INFO} "docker push $(DOCKER_REGISTRY)/$(ORG_NAME)/$(REPO_NAME):$(LATEST_TAG)"
 	@ docker push $(DOCKER_REGISTRY)/$(ORG_NAME)/$(REPO_NAME):$(LATEST_TAG)
-	@ docker push $(DOCKER_REGISTRY)/$(ORG_NAME)/$(RCLONE_REPO_NAME):$(RCLONE_LATEST_TAG)
+	${INFO} "docker push $(DOCKER_REGISTRY)/$(ORG_NAME)/$(REPO_NAME):$(VERSION_TAG)"
 	@ docker push $(DOCKER_REGISTRY)/$(ORG_NAME)/$(REPO_NAME):$(VERSION_TAG)
+	${INFO} "docker push $(DOCKER_REGISTRY)/$(ORG_NAME)/$(RCLONE_REPO_NAME):$(RCLONE_LATEST_TAG)"
+	@ docker push $(DOCKER_REGISTRY)/$(ORG_NAME)/$(RCLONE_REPO_NAME):$(RCLONE_LATEST_TAG)
+	${INFO} "docker push $(DOCKER_REGISTRY)/$(ORG_NAME)/$(RCLONE_REPO_NAME):$(RCLONE_VERSION_TAG)"
 	@ docker push $(DOCKER_REGISTRY)/$(ORG_NAME)/$(RCLONE_REPO_NAME):$(RCLONE_VERSION_TAG)
 	${INFO} "Complete"
 
@@ -89,12 +93,16 @@ test:
 	${INFO} "Test Complete!"
 
 install:
-	${INFO} "Installing..."
+	${INFO} "Tagging images... "
+	${INFO} "docker tag $(ORG_NAME)/$(REPO_NAME):$(LATEST_TAG) $(DOCKER_REGISTRY)/$(ORG_NAME)/$(REPO_NAME):$(VERSION_TAG)"
 	@ docker tag $(ORG_NAME)/$(REPO_NAME):$(LATEST_TAG) $(DOCKER_REGISTRY)/$(ORG_NAME)/$(REPO_NAME):$(VERSION_TAG)
+	${INFO} "docker tag $(ORG_NAME)/$(REPO_NAME):$(LATEST_TAG) $(DOCKER_REGISTRY)/$(ORG_NAME)/$(REPO_NAME):$(LATEST_TAG)"
+	@ docker tag $(ORG_NAME)/$(REPO_NAME):$(LATEST_TAG) $(DOCKER_REGISTRY)/$(ORG_NAME)/$(REPO_NAME):$(LATEST_TAG)
+	${INFO} "docker tag $(ORG_NAME)/$(RCLONE_REPO_NAME):$(RCLONE_LATEST_TAG) $(DOCKER_REGISTRY)/$(ORG_NAME)/$(RCLONE_REPO_NAME):$(RCLONE_LATEST_TAG)"
+	@ docker tag $(ORG_NAME)/$(RCLONE_REPO_NAME):$(RCLONE_LATEST_TAG) $(DOCKER_REGISTRY)/$(ORG_NAME)/$(RCLONE_REPO_NAME):$(RCLONE_LATEST_TAG)
+	${INFO} "docker tag $(ORG_NAME)/$(RCLONE_REPO_NAME):$(RCLONE_LATEST_TAG) $(DOCKER_REGISTRY)/$(ORG_NAME)/$(RCLONE_REPO_NAME):$(RCLONE_VERSION_TAG)"
 	@ docker tag $(ORG_NAME)/$(RCLONE_REPO_NAME):$(RCLONE_LATEST_TAG) $(DOCKER_REGISTRY)/$(ORG_NAME)/$(RCLONE_REPO_NAME):$(RCLONE_VERSION_TAG)
-	${INFO} "Install complete"
-
-#  docker push docker.pkg.github.com/Cobrijani/restic-backup-docker/app:1.0
+	${INFO} "Tagging complete"
 
 # Cosmetics
 YELLOW := "\e[1;33m"

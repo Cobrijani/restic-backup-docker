@@ -16,3 +16,9 @@ jobs:
       run: make test
     - name: Tag image
       run: make install ORG_NAME=cobrijani/restic-backup-docker REPO_NAME=restic-backup-docker RCLONE_REPO_NAME=restic-backup-docker-rclone DOCKER_REGISTRY=docker.pkg.github.com
+    - name: Login
+      run: make login DOCKER_REGISTRY_AUTH=docker.pkg.github.com DOCKER_REGISTRY=docker.pkg.github.com DOCKER_USER=${{secrets.DOCKER_USERNAME}} DOCKER_PASSWORD=${{secrets.DOCKER_PASSWORD}}
+    - name: Push images
+      run: make deploy ORG_NAME=cobrijani/restic-backup-docker REPO_NAME=restic-backup-docker RCLONE_REPO_NAME=restic-backup-docker-rclone DOCKER_REGISTRY=docker.pkg.github.com
+    - name: Logout
+      run: make logout DOCKER_REGISTRY_AUTH=docker.pkg.github.com DOCKER_REGISTRY=docker.pkg.github.com

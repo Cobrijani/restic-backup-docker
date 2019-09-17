@@ -4,6 +4,9 @@
 PROJECT_NAME ?= restic-backup-docker
 ORG_NAME ?= cobrijani
 REPO_NAME ?= restic-backup
+RCLONE_REPO_NAME ?= $(REPO_NAME)
+
+
 
 # Schema variables
 SCHEMA_URL ?= "https://github.com/Cobrijani/restic-backup-docker"
@@ -25,9 +28,15 @@ DOCKER_REGISTRY_AUTH ?=
 DOCKER_USER ?=
 DOCKER_PASSWORD ?=
 
+RCLONE_PREFIX?=
+VERSION_TAG ?= $(VERSION).$(VCS_REF)
+RCLONE_VERSION_TAG ?= $(RCLONE_PREFIX)$(VERSION_TAG)
+LATEST_TAG ?= latest
+RCLONE_LATEST_TAG ?= $(RCLONE_PREFIX)$(LATEST_TAG)
+
 build:
 	${INFO} "Building docker images..."
-	@ docker build --no-cache -t $(ORG_NAME)/$(REPO_NAME) \
+	@ docker build --no-cache -t $(ORG_NAME)/$(REPO_NAME):$(LATEST_TAG) \
 				 --label maintainer=$(MAINTAINER) \
 				 --label org.label-schema.build-date=$(BUILD_DATE) \
 				 --label org.label-schema.name=$(SCHEMA_NAME) \
@@ -39,7 +48,7 @@ build:
 				 --label org.label-schema.version=$(VERSION) \
 				 --label org.label-schema.schema-version=$(SCHEMA_VERSION) \
 				  .
-	@ docker build --no-cache -t $(ORG_NAME)/$(REPO_NAME):rclone-latest \
+	@ docker build --no-cache -t $(ORG_NAME)/$(RCLONE_REPO_NAME):$(RCLONE_LATEST_TAG) \
 				 --label maintainer=$(MAINTAINER) \
 				 --label org.label-schema.build-date=$(BUILD_DATE) \
 				 --label org.label-schema.name=$(SCHEMA_NAME) \
@@ -67,10 +76,10 @@ logout:
 
 deploy:
 	${INFO} "Deploying images"
-	@ docker push $(ORG_NAME)/$(REPO_NAME)
-	@ docker push $(ORG_NAME)/$(REPO_NAME):rclone-latest
-	@ docker push $(ORG_NAME)/$(REPO_NAME):$(VERSION).$(VCS_REF)
-	@ docker push $(ORG_NAME)/$(REPO_NAME):rclone-$(VERSION).$(VCS_REF)
+	@ docker push $(DOCKER_REGISTRY)/$(ORG_NAME)/$(REPO_NAME):$(LATEST_TAG)
+	@ docker push $(DOCKER_REGISTRY)/$(ORG_NAME)/$(RCLONE_REPO_NAME):$(RCLONE_LATEST_TAG)
+	@ docker push $(DOCKER_REGISTRY)/$(ORG_NAME)/$(REPO_NAME):$(VERSION_TAG)
+	@ docker push $(DOCKER_REGISTRY)/$(ORG_NAME)/$(RCLONE_REPO_NAME):$(RCLONE_VERSION_TAG)
 	${INFO} "Complete"
 
 test:
@@ -81,9 +90,14 @@ test:
 
 install:
 	${INFO} "Installing..."
-	@ docker tag $(ORG_NAME)/$(REPO_NAME) $(ORG_NAME)/$(REPO_NAME):$(VERSION).$(VCS_REF)
-	@ docker tag $(ORG_NAME)/$(REPO_NAME):rclone-latest $(ORG_NAME)/$(REPO_NAME):rclone-$(VERSION).$(VCS_REF)
+	@ docker tag $(ORG_NAME)/$(REPO_NAME):$(LATEST_TAG) $(ORG_NAME)/$(REPO_NAME):$(VERSION_TAG)
+	@ docker tag $(ORG_NAME)/$(RCLONE_REPO_NAME):$(RCLONE_LATEST_TAG) $(ORG_NAME)/$(RCLONE_REPO_NAME):$(RCLONE_VERSION_TAG)
 	${INFO} "Install complete"
+
+printtest:
+	${INFO} "docker push $(DOCKER_REGISTRY)/$(ORG_NAME)/$(RCLONE_REPO_NAME):$(RCLONE_VERSION_TAG)"
+
+#  docker push docker.pkg.github.com/Cobrijani/restic-backup-docker/app:1.0
 
 # Cosmetics
 YELLOW := "\e[1;33m"

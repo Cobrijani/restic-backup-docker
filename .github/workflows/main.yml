@@ -11,4 +11,4 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Build image
-      run: make build ORG_NAME=${GITHUB_REPOSITORY} REPO_NAME=restic-backup-docker RCLONE_REPO_NAME=restic-backup-docker-rclone
+      run: make build ORG_NAME=cobrijani/restic-backup-docker REPO_NAME=restic-backup-docker RCLONE_REPO_NAME=restic-backup-docker-rclone
